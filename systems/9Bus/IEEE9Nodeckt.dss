@@ -1,0 +1,105 @@
+Clear 
+
+new circuit.IEEE9Nodeckt 
+~ basekv=16.5 pu=1.040 Bus1=Bus1 MVASC3=500000  500000
+
+!GENERATORS
+New Generator.B2  Bus1=Bus2  kV= 18 kW=163000 Model=3 Vpu=1.025 Maxkvar=5000 Minkvar=-300000 !  kvar=300000
+New Generator.B3  Bus1=Bus3  kV= 13.8 kW=85000 Model=3 Vpu=1.025 Maxkvar=5000 Minkvar=-300000 !  kvar=-11000 !
+
+
+!TRANSFORMERS
+New Transformer.Sub1 Phases=3 Windings=2   XHL=6.25 %loadloss=0
+~ wdg=1 bus=Bus2   conn=wye  kv=18  kva=100000    
+~ wdg=2 bus=Bus7     conn=wye    kv=230  kva=100000
+new regcontrol.Sub1  transformer=Sub1 winding=2  vreg=520  band=2  ptratio=20 ctprim=3210  R=3   X=9 
+
+
+New Transformer.Sub2 Phases=3 Windings=2   XHL=5.86 %loadloss=0
+~ wdg=1 bus=Bus3   conn=wye  kv=13.8  kva=100000  
+~ wdg=2 bus=Bus9     conn=wye    kv=230  kva=100000 
+new regcontrol.Sub2  transformer=Sub2 winding=2  vreg=400  band=2  ptratio=20 ctprim=4170  R=3   X=9 
+
+
+New Transformer.Sub3 Phases=3 Windings=2   XHL=5.76 %loadloss=0
+~ wdg=1 bus=Bus1   conn=wye  kv=16.5  kva=100000  
+~ wdg=2 bus=Bus4     conn=wye    kv=230  kva=100000   
+new regcontrol.Sub3  transformer=Sub3 winding=2  vreg=480  band=2  ptratio=20 ctprim=3480  R=3   X=9 
+
+
+!LINE CODES
+New linecode.bus7_bus8 nphases=3 BaseFreq=60 
+~ rmatrix = (0.4512 | 0 0.4512 | 0 0 0.4512 ) 
+~ xmatrix = (3.8155 | 0 3.8155 | 0 0 3.8155 ) 
+~ Cmatrix = [149.29 | 0 149.29 | 0 0 149.29 ]
+~ units=mi
+
+New linecode.bus8_bus9 nphases=3 BaseFreq=60 
+~ rmatrix = (0.6339 | 0 0.6339 | 0 0 0.6339 ) 
+~ xmatrix = (5.350858 | 0 5.350858 | 0 0 5.350858 ) 
+~ Cmatrix = [209.23 | 0 209.23 | 0 0 209.23 ]
+~ units=mi
+
+New linecode.bus7_bus5 nphases=3 BaseFreq=60 
+~ rmatrix = (1.721010 | 0 1.721010 | 0 0 1.721010 ) 
+~ xmatrix = (8.584683 | 0 8.584683 | 0 0 8.584683 ) 
+~ Cmatrix = [305.61 | 0 305.61 | 0 0 305.61 ]
+~ units=mi
+
+New linecode.bus5_bus4 nphases=3 BaseFreq=60 
+~ rmatrix = (0.5316 | 0 0.5316 | 0 0 0.5316 ) 
+~ xmatrix = (4.507588 | 0 4.507588 | 0 0 4.507588 ) 
+~ Cmatrix = [176.28 | 0 176.28 | 0 0 176.28 ]
+~ units=mi
+
+New linecode.bus4_bus6 nphases=3 BaseFreq=60 
+~ rmatrix = (0.9036 | 0 0.9036 | 0 0 0.9036 ) 
+~ xmatrix = (4.878219 | 0 4.878219 | 0 0 4.878219 ) 
+~ Cmatrix = [158.26 | 0 158.26 | 0 0 158.26 ]
+~ units=mi
+
+New linecode.bus6_bus9 nphases=3 BaseFreq=60 
+~ rmatrix = (2.1066 | 0 2.1066 | 0 0 2.1066 ) 
+~ xmatrix = (9.285581 | 0 9.285581 | 0 0 9.285581 ) 
+~ Cmatrix = [357.15 | 0 357.15 | 0 0 357.15 ]
+~ units=mi
+
+
+!LOAD DEFINITIONS 
+! add loadshape
+redirect loadshape.dss
+
+!LOAD DEFINITIONS 
+New Load.Load8 Bus1=Bus8.1.2.3 Conn=Wye kV=230   kW=100000 kvar=35000   daily=loadshape_Load8
+New Load.Load5 Bus1=Bus5.1.2.3 Conn=Wye kV=230   kW=125000 kvar=50000   daily=loadshape_Load5
+New Load.Load6 Bus1=Bus6.1.2.3 Conn=Wye kV=230   kW=125000 kvar=50000    daily=loadshape_Load6
+
+!LINE DEFINITIONS 
+New Line.Line7_8    Phases=3 Bus1=Bus7.1.2.3    Bus2=Bus8.1.2.3  LineCode=bus7_bus8 Length=10 units=mi 
+New Line.Line8_9    Phases=3 Bus1=Bus8.1.2.3    Bus2=Bus9.1.2.3  LineCode=bus8_bus9 Length=10  units=mi    
+New Line.Line7_5    Phases=3 Bus1=Bus7.1.2.3    Bus2=Bus5.1.2.3  LineCode=bus7_bus5 Length=10  units=mi   
+New Line.Line5_4    Phases=3 Bus1=Bus5.1.2.3    Bus2=Bus4.1.2.3  LineCode=bus5_bus4 Length=10 units=mi   
+New Line.Line4_6    Phases=3 Bus1=Bus4.1.2.3    Bus2=Bus6.1.2.3  LineCode=bus4_bus6 Length=10  units=mi 
+New Line.Line6_9    Phases=3 Bus1=Bus6.1.2.3    Bus2=Bus9.1.2.3  LineCode=bus6_bus9 Length=10  units=mi
+
+
+!SWITCH DEFINITIONS 
+! New Line.Line6_9    Phases=3 Bus1=Bus6   Bus2=Bus9  Switch=y  r1=1e-4 r0=1e-4 x1=0.000 x0=0.000 c1=0.000 c0=0.000
+
+
+!BATTERY DEFINITIONS. Initialize with 0 kw
+New Generator.batt1 bus1=Bus8 kV=230 kW=0.01 pf=0.95 conn=Delta Model=1
+
+
+!CAPACITOR DEFINITIONS
+New Capacitor.Cap1 Bus1=Bus7 phases=3 kVAR=40000 kV=230
+New Capacitor.Cap2 Bus1=Bus9 phases=3 kVAR=20000 kV=230 
+
+Set Voltagebases=[230, 18, 16.5, 13.8]
+Calcvoltagebases
+calcv
+BusCoords IEEE9Node_BusXY.csv
+
+Set mode=Daily number=1 hour=0 stepsize=3600 sec=0
+
+ 

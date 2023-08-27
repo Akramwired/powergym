@@ -9,6 +9,13 @@ from powergym.env import Env
 # map from system_name to fixed information of the system
 
 _SYS_INFO = {
+    '9Bus': {
+        'source_bus': 'bus1',
+        'node_size': 500,
+        'shift': 10,
+        'show_node_labels': True
+    },
+    
     '13Bus': {
         'source_bus': 'sourcebus',
         'node_size': 500,
@@ -41,6 +48,19 @@ _SYS_INFO = {
 
 # map from env_name to the necessary information
 _ENV_INFO = {
+    '9Bus': {
+        'system_name': '9Bus',
+        'dss_file': 'IEEE9Nodeckt.dss',
+        'max_episode_steps': 24,
+        'reg_act_num': 33,
+        'bat_act_num': 33,
+        'power_w': 10.0,
+        'cap_w': 1.0/33,
+        'reg_w': 1.0/33,
+        'soc_w': 0.0/33,
+        'dis_w': 6.0/33
+    },
+
     '13Bus': {
         'system_name': '13Bus',
         'dss_file': 'IEEE13Nodeckt_daily.dss',
