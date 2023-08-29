@@ -1,7 +1,7 @@
 ## What's New?
 --------------
 
-The WSCC 9-bus system has been added which is similar to IEEE 9-bus system in the environment. It is tested with two policy based RL environment namely PPO & A2C. The discrete mode of action has been tested with and the continuos action will be tested later. More environments will be shortly.
+The WSCC 9-bus system has been added which is similar to IEEE 9-bus system in the environment. It is tested with two policy based RL environment namely PPO & A2C. The discrete mode of action has been tested with and the continuous action will be tested later. More environments will be added shortly.
 
 ## Overview
 ------------
