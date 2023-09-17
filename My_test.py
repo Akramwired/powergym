@@ -27,7 +27,7 @@ if not os.path.exists(os.path.join(cwd,'random_agent_plots')):
 
 env = make_env('9Bus')
 env.seed(123456 + 0)
-
+# selection of the best model 
 model_path = f"{models_dir}/250000.zip"
 model = PPO.load(model_path, env=env)
 
